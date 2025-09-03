@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Verify OTP</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="auth-wrapper">
+    <h2>Verify Your Identity</h2>
+    <p>Please enter the One-Time Password (OTP) sent to your email.</p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+      <input type="text" name="otp" placeholder="Enter OTP" required>
+      <button type="submit">Verify</button>
+    </form>
+  
+    </div>
+  </div>
+</body>
+
+</html>

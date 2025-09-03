@@ -1,0 +1,119 @@
+/* Base Layout */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #0f0f0f;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+/* Container */
+.auth-wrapper {
+  background-color: #1a1a1a;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.6);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+/* Headings */
+.auth-wrapper h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  background: linear-gradient(90deg, #3f87ff, #8f3fff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+.auth-wrapper p {
+  color: #aaa;
+  font-size: 0.95rem;
+  margin-bottom: 30px;
+}
+
+/* Flash Messages */
+.flash {
+  padding: 12px 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.flash.success {
+  background-color: #2e8b57;
+  color: #fff;
+}
+
+.flash.error {
+  background-color: #b22222;
+  color: #fff;
+}
+
+/* Input Fields */
+.auth-wrapper input[type="text"],
+.auth-wrapper input[type="email"],
+.auth-wrapper input[type="password"] {
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 8px;
+  background-color: #2a2a2a;
+  color: #fff;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.auth-wrapper input:focus {
+  background-color: #333;
+  outline: none;
+}
+
+/* Buttons */
+.auth-wrapper button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #3f87ff, #8f3fff);
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.auth-wrapper button:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 10px rgba(143, 63, 255, 0.5);
+}
+
+/* Footer Links */
+.auth-footer {
+  margin-top: 20px;
+  color: #aaa;
+  font-size: 0.9rem;
+}
+
+.auth-footer a {
+  color: #8f3fff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.auth-footer a:hover {
+  text-decoration: underline;
+}

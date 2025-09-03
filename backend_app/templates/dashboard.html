@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div style="text-align: right;">
+        <a href="/logout">Logout</a>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <h2>Welcome to Your Dashboard</h2>
+    <nav>
+        <ul>
+            <li><a href="/upload">Upload Document</a></li>
+            <li><a href="/view-documents">View Saved Documents</a></li>
+            <li><a href="/profile">View Profile</a></li>
+            <li><a href="/reviews">Add Reviews</a></li>
+        </ul>
+    </nav>
+</body>
+</html>
