@@ -1,0 +1,118 @@
+[
+  {
+    "input": "The lessee shall pay rent on time.",
+    "target": "The tenant must pay rent on time."
+  },
+  {
+    "input": "The supplier warrants that the goods conform to the specifications.",
+    "target": "The supplier guarantees the goods meet the specifications."
+  },
+  {
+    "input": "This contract is governed by the laws of the State of California.",
+    "target": "California state law governs this contract."
+  },
+  {
+    "input": "Neither party shall be liable for indirect or consequential damages.",
+    "target": "Neither side is responsible for indirect or consequential damages ."
+  },
+  {
+    "input": "Confidential information shall not be disclosed without prior consent.",
+    "target": "You must not share confidential information without prior consent ."
+  },
+  {
+    "input": "This contract is governed by the laws of the State of California.",
+    "target": "This contract is governed by California state law ."
+  },
+  {
+    "input": "Any amendments to this agreement must be in writing and signed by both parties.",
+    "target": "Any changes to this agreement must be written and signed by both parties."
+  },
+  {
+    "input": "Force majeure events include, but are not limited to, acts of God.",
+    "target": "Force majeure events include, but are not limited to, natural disasters."
+  },
+  {
+    "input": "The parties agree to settle disputes by arbitration in accordance with the rules of the ICC.",
+    "target": "The parties shall settle disputes by arbitration in accordance with the rules of the ICC."
+  },
+  {
+    "input": "The supplier warrants that the goods conform to the specifications.",
+    "target": "The supplier guarantees that the goods meet the specifications ."
+  },
+  {
+    "input": "This agreement may be terminated by either party with 30 days written notice.",
+    "target": "Either party can end this agreement with 30 days written notice ."
+  },
+  {
+    "input": "The tenant pays the rent on time.",
+    "target": "The tenant must pay the rent on time."
+  },
+  {
+    "input": "The parties agree to resolve disputes through arbitration in accordance with ICC rules.",
+    "target": "The parties will settle disputes by arbitration under the ICC rules ."
+  },
+  {
+    "input": "Force majeure events include, but are not limited to, acts of God.",
+    "target": "Force majeure events include, but are not limited to, natural disasters ."
+  },
+  {
+    "input": "Neither party is liable for indirect or consequential damages.",
+    "target": "Neither party is liable for indirect or consequential damages."
+  },
+  {
+    "input": "All notices must be in writing and delivered to the other party’s registered office.",
+    "target": "All notices must be written and sent to the registered office of the other party ."
+  },
+  {
+    "input": "This agreement may be terminated by either party with 30 days' written notice.",
+    "target": "Either party may terminate this agreement with 30 days' written notice."
+  },
+  {
+    "input": "The lessee shall pay rent on time.",
+    "target": "The tenant must pay the rent on time."
+  },
+  {
+    "input": "This contract is governed by the laws of the State of California.",
+    "target": "The law of the State of California governs this contract."
+  },
+  {
+    "input": "Confidential information shall not be disclosed without prior consent.",
+    "target": "You must not share confidential information without prior consent."
+  },
+  {
+    "input": "Any amendment to this agreement shall be made in writing and signed by both parties.",
+    "target": "Any amendment to this agreement must be written and signed by both parties."
+  },
+  {
+    "input": "Events of force majeure include, but are not limited to, the acts of God.",
+    "target": "Cases of force majeure include, but are not limited to, natural disasters."
+  },
+  {
+    "input": "The supplier shall ensure that the goods comply with the specifications.",
+    "target": "The supplier ensures that the goods meet the specifications."
+  },
+  {
+    "input": "This agreement may be terminated by either party with 30 days written notice.",
+    "target": "Either party can end this agreement with 30 days’ written notice."
+  },
+  {
+    "input": "All notices must be in writing and delivered to the head office of the other party.",
+    "target": "All notices must be written and sent to the head office of the other party."
+  },
+  {
+    "input": "The parties agree to resolve disputes through arbitration in accordance with ICC rules.",
+    "target": "The parties will settle disputes by arbitration under ICC rules."
+  },
+  {
+    "input": "Neither party shall be liable for indirect or consequential damages.",
+    "target": "Neither side is responsible for indirect or consequential damages."
+  },
+  {
+    "input": "Any amendments to this agreement must be in writing and signed by both parties.",
+    "target": "Any changes to this agreement must be written and signed by both parties ."
+  },
+  {
+    "input": "All notices must be in writing and delivered to the other party’s registered office.",
+    "target": "All notices must be written and sent to the other party’s registered office."
+  }
+]
