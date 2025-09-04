@@ -1,31 +1,116 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartClause Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div style="text-align: right;">
-        <a href="/logout">Logout</a>
+
+  <!-- 🔝 Navbar -->
+  <header class="navbar">
+    <div class="logo-badge">
+      <img src="static/images/smartclause-logo.png" alt="SmartClause Logo" class="logo" />
+      <span class="tagline">Smart Legal for Small Business</span>
+    </div>
+    <nav>
+      <a href="/upload" title="Upload a new legal document">Upload Document</a>
+      <a href="/saved" title="View your saved summaries">View Documents</a>
+      <a href="/profile" title="Manage your profile">View Profile</a>
+      <a href="/reviews" title="Add feedback or suggestions">Add Reviews</a>
+      <a href="/logout" class="logout" title="Log out of your account">Logout</a>
+    </nav>
+  </header>
+
+  <!-- 🎯 Hero Section -->
+  <section class="hero">
+    <h1>Welcome to Your Dashboard</h1>
+    <p>Empower your decisions with SmartClause</p>
+    <a href="/upload" class="cta-button">Upload Document</a>
+  </section>
+
+  <!-- 📦 Features Section -->
+  <section class="features">
+    <div class="feature-box">
+  <i class="fas fa-clock feature-icon"></i>
+  <h2>Save Time & Money</h2>
+  <p>Reduce the time spent decoding legal documents from hours to minutes.</p>
+</div>
+
+<div class="feature-box">
+  <i class="fas fa-lightbulb feature-icon"></i>
+  <h2>Instant Clarity</h2>
+  <p>Get plain-language summaries of complex legal documents instantly.</p>
+</div>
+
+<div class="feature-box">
+  <i class="fas fa-shield-alt feature-icon"></i>
+  <h2>Risk Mitigation</h2>
+  <p>Identify potential issues and deadlines early to avoid costly mistakes.</p>
+</div>
+
+<div class="feature-box">
+  <i class="fas fa-robot feature-icon"></i>
+  <h2>Smart Automation</h2>
+  <p>Automatically highlight key terms, dates, and obligations in contracts.</p>
+</div>
+  </section>
+
+  <!-- SmartClause in action -->
+<section class="smartclause-benefits">
+  <h2>SmartClause in Action</h2>
+  <div class="benefit-grid">
+
+    <!-- Upload & Simplify -->
+    <div class="benefit-item">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2L12 16M12 2L8 6M12 2L16 6" stroke="#0052CC" stroke-width="2" stroke-linecap="round"/>
+        <rect x="4" y="16" width="16" height="6" rx="2" stroke="#0052CC" stroke-width="2"/>
+      </svg>
+      <h3>Upload & Simplify</h3>
+      <p>Drag and drop legal docs to instantly extract and simplify clauses.</p>
     </div>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, message in messages %}
-          <div class="flash {{ category }}">{{ message }}</div>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
+    <!-- Clause Detection -->
+    <div class="benefit-item">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+        <circle cx="11" cy="11" r="7" stroke="#0052CC" stroke-width="2"/>
+        <line x1="16.5" y1="16.5" x2="22" y2="22" stroke="#0052CC" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <h3>Clause Detection</h3>
+      <p>AI-powered parsing highlights key terms, risks, and deadlines.</p>
+    </div>
 
-    <h2>Welcome to Your Dashboard</h2>
-    <nav>
-        <ul>
-            <li><a href="/upload">Upload Document</a></li>
-            <li><a href="/view-documents">View Saved Documents</a></li>
-            <li><a href="/profile">View Profile</a></li>
-            <li><a href="/reviews">Add Reviews</a></li>
-        </ul>
-    </nav>
+    <!-- Secure & Private -->
+    <div class="benefit-item">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+        <rect x="4" y="10" width="16" height="10" rx="2" stroke="#0052CC" stroke-width="2"/>
+        <path d="M8 10V7a4 4 0 018 0v3" stroke="#0052CC" stroke-width="2"/>
+      </svg>
+      <h3>Secure & Private</h3>
+      <p>End-to-end encryption ensures your documents stay confidential.</p>
+    </div>
+
+  </div>
+</section>
+
+  <!-- Why SmartClause -->
+  <section class="why-smartclause">
+  <h2>Why SmartClause?</h2>
+  <p>We combine legal expertise with cutting-edge AI to simplify contracts, reduce risk, and empower small businesses.</p>
+  <ul>
+    <li><i class="fas fa-check-circle"></i> Built for SMEs with real-world constraints</li>
+    <li><i class="fas fa-check-circle"></i> Localized for Sri Lankan legal documents</li>
+    <li><i class="fas fa-check-circle"></i> Secure, fast, and easy to use</li>
+  </ul>
+</section>
+
+  <!-- 📬 Footer -->
+  <footer class="footer">
+    <p>Contact us at <a href="mailto:smartclause.dev@gmail.com">smartclause.dev@gmail.com</a></p>
+  </footer>
+
 </body>
 </html>

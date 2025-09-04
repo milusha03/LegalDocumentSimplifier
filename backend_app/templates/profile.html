@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Profile</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h3>Legal Simplifier</h3>
+    <a href="/dashboard" class="nav-link">🏠 Dashboard</a>
+    <a href="/upload" class="nav-link">📤 Upload Document</a>
+    <a href="/saved" class="nav-link">📑 View Documents</a>
+    <a href="/profile" class="nav-link active">👤 View Profile</a>
+    <a href="/reviews" class="nav-link">📝 Add Reviews</a>
+    <button onclick="location.href='/logout'" class="logout-btn">🔐 Logout</button>
+  </div>
+
+  <!-- Main Content -->
+  <div class="profile-wrapper">
+    <h2>Your Profile</h2>
+
+    <div class="profile-photo-section">
+      <div class="photo-frame">
+        <img src="{{ url_for('static', filename=user[3]) if user[3] else url_for('static', filename='img/default.png') }}" alt="Profile Photo" class="profile-photo">
+        <span>Profile Photo</span>
+      </div>
+      <form action="/upload_avatar" method="POST" enctype="multipart/form-data">
+       <br> <label for="upload-photo" class="upload-label">Upload Photo</label>
+        <input type="file" name="avatar" id="upload-photo" accept="image/*" hidden onchange="this.form.submit()">
+      </form>
+
+      <p class="created-date">Account Created: {{ user[4].strftime('%Y-%m-%d') }}</p>
+    </div>
+
+    <div class="profile-info">
+      <p><strong>Name:</strong> {{ user[0] }} {{ user[1] }}</p>
+      <p><strong>Email:</strong> <span id="email">{{ user[2] }}</span></p>
+    </div>
+
+<div class="password-section">
+  <h3>Update Password</h3>
+  <input type="password" id="new-password" placeholder="New Password" required>
+  <input type="password" id="confirm-password" placeholder="Confirm New Password" required>
+  <button id="send-otp-btn">Send OTP</button>
+
+  <div id="error-message" style="color: #b22222; margin-top: 10px;"></div>
+
+  <div id="otp-section" style="display:none;">
+    <input type="text" id="otp-code" placeholder="Enter OTP" required>
+    <button id="update-password-btn">Verify & Update</button>
+  </div>
+</div>
+
+
+  <script src="{{ url_for('static', filename='js/profile.js') }}"></script>
+</body>
+</html>

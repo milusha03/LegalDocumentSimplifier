@@ -1,5 +1,5 @@
 # backend_app/app.py
-from flask import Flask, session, redirect, render_template, url_for
+from flask import Flask, session, redirect, render_template, url_for,request, flash
 from backend_app.auth_routes import auth_bp
 
 app = Flask(__name__)
@@ -22,3 +22,4 @@ def dashboard():
 
 if __name__ == "__main__":
     app.run(debug=True)
+

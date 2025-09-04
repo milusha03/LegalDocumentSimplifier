@@ -130,3 +130,108 @@ def verify_login_otp():
             return render_template("verify_otp.html")
 
     return render_template("verify_otp.html")
+
+@auth_bp.route("/send_password_otp", methods=["POST"])
+def send_password_otp():
+    data = request.get_json()
+    email = data.get("email")
+    new_password = data.get("new_password")
+    confirm_password = data.get("confirm_password")
+
+    # ✅ Validate password fields
+    if not new_password or not confirm_password:
+        return {"success": False, "message": "Both password fields are required."}, 400
+
+    if new_password != confirm_password:
+        return {"success": False, "message": "Passwords do not match."}, 400
+
+    # ✅ Proceed only if passwords match
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT user_id FROM users WHERE email = %s", (email,))
+    user = cur.fetchone()
+
+    if not user:
+        return {"success": False, "message": "User not found"}, 404
+
+    otp = generate_otp()
+    send_otp_email(email, otp)
+    cur.execute("INSERT INTO otps (user_id, otp_code, purpose, expires_at) VALUES (%s, %s, %s, NOW() + INTERVAL '10 minutes')",
+                (user[0], otp, "password"))
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    print("DEBUG: Incoming data =", data)
+    print("DEBUG: new_password =", data.get("new_password"))
+    print("DEBUG: confirm_password =", data.get("confirm_password"))
+
+
+    return {"success": True, "message": "OTP sent successfully"}
+
+@auth_bp.route("/verify_password_otp", methods=["POST"])
+def verify_password_otp():
+    data = request.get_json()
+    otp_input = data.get("otp")
+    new_password = data.get("new_password")
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT user_id FROM otps 
+        WHERE otp_code = %s AND purpose = 'password' AND expires_at > NOW()
+        ORDER BY created_at DESC LIMIT 1
+    """, (otp_input,))
+    row = cur.fetchone()
+
+    if not row:
+        cur.close()
+        conn.close()
+        return {"success": False, "message": "Invalid or expired OTP"}, 400
+
+    hashed = bcrypt.hashpw(new_password.encode(), bcrypt.gensalt()).decode()
+    cur.execute("UPDATE users SET password_hash = %s WHERE user_id = %s", (hashed, row[0]))
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    return {"success": True, "message": "Password updated successfully"}
+
+@auth_bp.route("/upload_avatar", methods=["POST"])
+def upload_avatar():
+    if "user_id" not in session:
+        return redirect("/login")
+
+    file = request.files.get("avatar")
+    if not file:
+        flash("No file uploaded.", "error")
+        return redirect("/profile")
+    
+    filename = file.filename
+    relative_path = f"uploads/{filename}"  # ✅ relative to static/
+    absolute_path = f"backend_app/static/{relative_path}"
+    file.save(absolute_path)
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("UPDATE users SET profile_photo = %s WHERE user_id = %s", (relative_path, session["user_id"]))
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    flash("Avatar updated successfully.", "success")
+    return redirect("/profile")
+
+@auth_bp.route("/profile", methods=["GET"])
+def profile():
+    if "user_id" not in session:
+        return redirect("/login")
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT first_name, last_name, email, profile_photo, created_at FROM users WHERE user_id = %s", (session["user_id"],))
+    user = cur.fetchone()
+    cur.close()
+    conn.close()
+
+    return render_template("profile.html", user=user)
