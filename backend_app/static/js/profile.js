@@ -82,3 +82,16 @@ document.getElementById("send-otp-btn").addEventListener("click", async () => {
 });
 
 
+function handleLogout() {
+  fetch("/logout", {
+    method: "POST",
+    credentials: "include"
+  })
+  .then(() => {
+    window.location.href = "/login";
+  })
+  .catch(err => {
+    console.error("Logout failed:", err);
+    alert("Something went wrong while logging out.");
+  });
+}

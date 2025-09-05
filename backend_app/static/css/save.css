@@ -1,0 +1,160 @@
+/* ================================
+   Base Layout (same theme)
+===================================*/
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  display: flex;                 /* sticky footer layout */
+  flex-direction: column;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #0f0f0f;
+  color: #fff;
+}
+
+.hidden { display: none; }
+
+/* ================================
+   Navbar (IDENTICAL STRUCTURE)
+===================================*/
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  background-color: #1a1a1a;
+  padding: 20px 40px;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+}
+
+.logo-badge { display: flex; align-items: center; }
+.logo { height: 40px; margin-right: 12px; }
+.tagline { font-size: 1rem; color: #ccc; }
+
+nav { display: flex; align-items: center; gap: 20px; }
+nav a {
+  color: #aaa;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+nav a:hover { color: #8f3fff; }
+nav a.active {
+  color: #8f3fff;
+  font-weight: bold;
+  border-bottom: 2px solid #8f3fff;
+}
+
+/* ================================
+   Profile Dropdown (IDENTICAL)
+===================================*/
+.profile-dropdown { position: relative; }
+
+.profile-trigger {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  overflow: hidden; cursor: pointer;
+  box-shadow: 0 0 8px rgba(143, 63, 255, 0.3);
+}
+.profile-trigger img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+
+.profile-menu {
+  position: absolute; top: 50px; right: 0;
+  background-color: #1a1a1a;
+  padding: 15px; width: 200px;
+  border-radius: 10px;
+  box-shadow: 0 0 12px rgba(143, 63, 255, 0.2);
+  color: #ccc; z-index: 999;
+}
+.profile-menu p { margin: 5px 0; font-size: 0.95rem; }
+.profile-menu button {
+  width: 100%; padding: 8px;
+  background: linear-gradient(90deg, #3f87ff, #8f3fff);
+  color: #fff; border: none; border-radius: 6px;
+  cursor: pointer; font-weight: bold;
+}
+
+/* ================================
+   Main Container (Save page)
+   — accounts for fixed navbar
+===================================*/
+.container {
+  flex: 1;                               /* pushes footer to bottom */
+  padding: 140px 40px 60px;              /* top padding clears fixed navbar */
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.container h2 {
+  font-size: 1.8rem;
+  margin-bottom: 12px;
+  background: linear-gradient(90deg, #3f87ff, #8f3fff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+.container p {
+  margin: 8px 0;
+  color: #ccc;
+}
+
+/* Optional: subtle card look for this page */
+.container form {
+  margin-top: 22px;
+  display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
+}
+.container form + p { color: #aaa; }
+
+/* Buttons: primary (Save) uses gradient; secondary (Don't Save) uses dark */
+button[name="save_decision"][value="yes"] {
+  padding: 10px 22px;
+  border: none; border-radius: 8px;
+  background: linear-gradient(90deg, #3f87ff, #8f3fff);
+  color: #fff; font-size: 1rem; font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+button[name="save_decision"][value="yes"]:hover {
+  transform: scale(1.04);
+  box-shadow: 0 0 10px rgba(143, 63, 255, 0.5);
+}
+
+button[name="save_decision"][value="no"] {
+  padding: 10px 22px;
+  border-radius: 8px;
+  background-color: #2a2a2a;
+  color: #fff;
+  border: 1px solid #444;
+  font-size: 1rem; font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+button[name="save_decision"][value="no"]:hover {
+  background-color: #333;
+  transform: scale(1.03);
+}
+
+/* ================================
+   Footer (IDENTICAL THEME)
+===================================*/
+.footer {
+  text-align: center;
+  padding: 30px 20px;
+  background-color: #1a1a1a;
+  color: #aaa;
+  font-size: 0.9rem;
+}
+.footer a { color: #8f3fff; text-decoration: none; }
+.footer a:hover { text-decoration: underline; }

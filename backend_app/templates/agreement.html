@@ -1,0 +1,45 @@
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Agreement</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/agreement.css') }}" />
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+  </head>
+  <body>
+    <div class="container">
+      <h2>User Agreement</h2>
+
+      <div class="agreement-box">
+        <p>By uploading legal documents to <strong>Legal Document Simplifier</strong>, you confirm that:</p>
+        <ul>
+          <li>You are authorized to upload and process the legal documents.</li>
+          <li>You understand that this system provides simplified explanations using AI and is not a substitute for legal advice.</li>
+          <li>You take full responsibility for the accuracy and legality of the uploaded content.</li>
+          <li>You acknowledge that misuse of this service may result in permanent account suspension.</li>
+        </ul>
+        <p>Please read and agree to the above terms before continuing.</p>
+      </div>
+
+     <form action="/accept_agreement" method="POST" class="agreement-form">
+  <label class="agreement-label">
+    <input type="checkbox" id="agreeCheckbox" name="agreement" />
+    I have read and agree to the terms above.
+  </label>
+  <button type="submit" id="continueBtn" disabled class="accept-btn">Accept</button>
+</form>
+
+<a href="/dashboard" class="back-dashboard-btn">← Back to Dashboard</a>
+
+
+    <script>
+      const checkbox = document.getElementById("agreeCheckbox");
+      const button = document.getElementById("continueBtn");
+
+      checkbox.addEventListener("change", () => {
+        button.disabled = !checkbox.checked;
+      });
+    </script>
+  </body>
+  </html>

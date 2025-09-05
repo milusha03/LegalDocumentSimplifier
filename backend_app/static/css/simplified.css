@@ -1,4 +1,4 @@
-/* Base Layout */
+/* 🎨 Base Layout */
 * {
   box-sizing: border-box;
 }
@@ -9,6 +9,9 @@ body {
   font-family: 'Segoe UI', sans-serif;
   background-color: #0f0f0f;
   color: #fff;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 /* 🔝 Navbar */
@@ -117,140 +120,138 @@ nav a.active {
   display: none;
 }
 
-/* 📦 Main Wrapper */
-.profile-wrapper {
+/* 📦 Container */
+.container {
   padding: 140px 40px 60px;
-  max-width: 700px;
+  max-width: 800px;
   margin: auto;
+  text-align: center;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.profile-wrapper h2 {
+.container h2, .container h3 {
   font-size: 1.8rem;
-  margin-bottom: 30px;
-  background: linear-gradient(90deg, #3f87ff, #8f3fff);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-  text-align: center;
-}
-
-/* 🖼️ Profile Photo Section */
-.profile-photo-section {
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-.photo-frame {
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  background-color: #2a2a2a;
-  margin: 0 auto 10px;
-  box-shadow: 0 0 10px rgba(143, 63, 255, 0.3);
-  position: relative;
-  overflow: hidden;
-}
-
-.profile-photo {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.photo-overlay {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #aaa;
-  font-size: 0.9rem;
-  pointer-events: none;
-  text-align: center;
-}
-
-.upload-label {
-  display: inline-block;
-  padding: 10px 20px;
-  background: linear-gradient(90deg, #3f87ff, #8f3fff);
-  color: white;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.created-date {
-  margin-top: 10px;
-  font-size: 0.9rem;
-  color: #aaa;
-}
-
-/* 🗑️ Remove Photo Link */
-.remove-link {
-  background: none;
-  border: none;
-  color: #ff4d4d;
-  font-size: 0.9rem;
-  cursor: pointer;
-  text-decoration: underline;
-  margin-top: 6px;
-}
-
-.remove-link:hover {
-  color: #ff1a1a;
-}
-
-/* 📄 Profile Info */
-.profile-info p {
-  margin: 10px 0;
-  font-size: 1rem;
-}
-
-/* 🔐 Password Section */
-.password-section {
-  margin-top: 40px;
-}
-
-.password-section h3 {
   margin-bottom: 20px;
-  font-size: 1.2rem;
-  color: #8f3fff;
-}
-
-.password-section input {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 15px;
-  border: none;
-  border-radius: 8px;
-  background-color: #2a2a2a;
-  color: #fff;
-  font-size: 1rem;
-}
-
-.password-section input:focus {
-  background-color: #333;
-  outline: none;
-}
-
-.password-section button {
-  width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 8px;
   background: linear-gradient(90deg, #3f87ff, #8f3fff);
-  color: white;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* 🔘 Action Buttons */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.action-buttons button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
+  background: linear-gradient(90deg, #3f87ff, #8f3fff);
+  color: white;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.password-section button:hover {
-  transform: scale(1.03);
+.action-buttons button:hover {
+  transform: scale(1.05);
   box-shadow: 0 0 10px rgba(143, 63, 255, 0.5);
+}
+
+/* 📝 Review Section */
+.review-section {
+  background-color: #1a1a1a;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(143, 63, 255, 0.2);
+  text-align: left;
+}
+
+.review-section label {
+  display: block;
+  margin: 10px 0 5px;
+  font-weight: 500;
+}
+
+.review-section textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #444;
+  background-color: #0f0f0f;
+  color: #fff;
+  resize: vertical;
+}
+
+.review-section button[type="submit"] {
+  margin-top: 15px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  background: linear-gradient(90deg, #3f87ff, #8f3fff);
+  color: white;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.review-section button[type="submit"]:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(143, 63, 255, 0.5);
+}
+
+/* ⭐ Star Input */
+.star-input {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  gap: 5px;
+  margin-bottom: 15px;
+}
+
+.star-input input[type="radio"] {
+  display: none;
+}
+
+.star-input label {
+  font-size: 1.5rem;
+  color: #444;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.star-input input[type="radio"]:checked ~ label,
+.star-input label:hover,
+.star-input label:hover ~ label {
+  color: #8f3fff;
+}
+
+/* 🍞 Toast */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #4caf50;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 9999;
+}
+
+.toast.show {
+  opacity: 1;
 }
 
 /* 📬 Footer */

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Document Simplifier</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/document.css') }}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+  <script src="{{ url_for('static', filename='js/document.js') }}" defer></script>
+  <style>
+    /* Ensure footer sticks to bottom */
+    html, body {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      flex: 1; /* take up remaining space */
+      display: flex;
+      flex-direction: column;
+      justify-content: center; /* centers content vertically (optional) */
+      align-items: center; /* centers horizontally (optional) */
+      text-align: center;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 30px 20px;
+      background-color: #1a1a1a;
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  
+  <!-- 🔝 Navbar -->
+  <header class="navbar">
+    <div class="logo-badge">
+      <img src="{{ url_for('static', filename='images/smartclause-logo.png') }}" alt="SmartClause Logo" class="logo" />
+      <span class="tagline">Smart Legal for Small Business</span>
+    </div>
+    <nav>
+      <a href="/dashboard" class="{% if request.path == '/dashboard' %}active{% endif %}">Dashboard</a>
+      <a href="/agreement" class="{% if request.path in ['/agreement', '/document_interface', '/save_prompt', '/post_actions'] %}active{% endif %}">Upload Document</a>
+      <a href="/saved" class="{% if request.path == '/saved' %}active{% endif %}">View Documents</a>
+      <a href="/profile" class="{% if request.path == '/profile' %}active{% endif %}">View Profile</a>
+      <a href="/reviews" class="{% if request.path == '/reviews' %}active{% endif %}">Add Reviews</a>
+
+      <div class="profile-dropdown">
+        <div class="profile-trigger">
+          {% if user.profile_photo %}
+            <img src="{{ url_for('static', filename=user.profile_photo) }}" alt="Profile Photo">
+          {% else %}
+            <img src="{{ url_for('static', filename='images/default_avatar.png') }}" alt="Default Avatar">
+          {% endif %}
+        </div>
+        <div class="profile-menu hidden">
+          <p><strong>{{ user.first_name }} {{ user.last_name }}</strong></p>
+          <p>{{ user.email }}</p>
+          <form action="/logout" method="GET">
+            <button type="submit">Logout</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- 📤 Upload Section -->
+  <main class="container">
+    <h2>Upload & Simplify Legal Document</h2>
+
+    <form id="uploadForm" enctype="multipart/form-data">
+      <div class="upload-section">
+        <input type="file" id="docInput" name="document" accept="application/pdf" />
+        <div class="upload-actions">
+          <button type="button" id="removeBtn">Remove</button>
+          <button type="button" id="viewBtn" disabled>Open/View</button>
+          <button type="button" id="simplifyBtn" disabled>Simplify</button>
+        </div>
+      </div>
+    </form>
+
+    <div id="simplifyStatus" class="status-message hidden">
+      ⚠️ Please don't leave this page until the process completes...
+    </div>
+
+    <div id="spinner" class="spinner hidden">
+      <div class="loader"></div>
+      <p>Simplifying document, please wait...</p>
+    </div>
+
+    <div id="toast" class="toast hidden">Thanks for your feedback!</div>
+  </main>
+
+  <!-- 📬 Footer -->
+  <footer class="footer">
+    <p>Contact us at <a href="mailto:smartclause.dev@gmail.com">smartclause.dev@gmail.com</a></p>
+    <p>&copy; {{ current_year }} SmartClause. All Rights Reserved.</p>
+  </footer>
+
+  <!-- 🔽 Profile Dropdown Script -->
+  <script>
+    const trigger = document.querySelector('.profile-trigger');
+    const menu = document.querySelector('.profile-menu');
+
+    trigger?.addEventListener('click', () => {
+      menu.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!trigger?.contains(e.target) && !menu?.contains(e.target)) {
+        menu?.classList.add('hidden');
+      }
+    });
+  </script>
+
+</body>
+</html>

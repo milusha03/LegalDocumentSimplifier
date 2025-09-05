@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Your Profile</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+  <title>Save Confirmation</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/save.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
 </head>
@@ -25,15 +25,15 @@
 
       <div class="profile-dropdown">
         <div class="profile-trigger">
-          {% if user[3] %}
-            <img src="{{ url_for('static', filename=user[3]) }}" alt="Profile Photo">
+          {% if user.profile_photo %}
+            <img src="{{ url_for('static', filename=user.profile_photo) }}" alt="Profile Photo">
           {% else %}
             <img src="{{ url_for('static', filename='images/default_avatar.png') }}" alt="Default Avatar">
           {% endif %}
         </div>
         <div class="profile-menu hidden">
-          <p><strong>{{ user[0] }} {{ user[1] }}</strong></p>
-          <p>{{ user[2] }}</p>
+          <p><strong>{{ user.first_name }} {{ user.last_name }}</strong></p>
+          <p>{{ user.email }}</p>
           <form action="/logout" method="GET">
             <button type="submit">Logout</button>
           </form>
@@ -42,49 +42,16 @@
     </nav>
   </header>
 
-  <!-- Main Content -->
-  <div class="profile-wrapper">
-    <h2>Your Profile</h2>
+  <!-- ✅ Save Confirmation -->
+  <div class="container">
+    <h2>Save Simplified Document?</h2>
+    <p>Do you want to save the uploaded and simplified documents?</p>
+    <p>You can delete saved documents later from the <strong>View Documents</strong> panel.</p>
 
-    <div class="profile-photo-section">
-      <div class="photo-frame">
-        <img src="{{ url_for('static', filename=user[3]) if user[3] else url_for('static', filename='img/default.png') }}" class="profile-photo">
-        {% if not user[3] %}
-          <div class="photo-overlay">Choose Photo</div>
-        {% endif %}
-      </div>
-
-      <form action="/upload_avatar" method="POST" enctype="multipart/form-data">
-        <br>
-        <label for="upload-photo" class="upload-label">Upload Photo</label>
-        <input type="file" name="avatar" id="upload-photo" accept="image/*" hidden onchange="this.form.submit()">
-      </form>
-
-      <form action="/remove_avatar" method="POST">
-        <button type="submit" class="remove-link">Remove</button>
-      </form>
-
-      <p class="created-date">Account Created: {{ user[4].strftime('%Y-%m-%d') }}</p>
-    </div>
-
-    <div class="profile-info">
-      <p><strong>Name:</strong> {{ user[0] }} {{ user[1] }}</p>
-      <p><strong>Email:</strong> <span id="email">{{ user[2] }}</span></p>
-    </div>
-
-    <div class="password-section">
-      <h3>Update Password</h3>
-      <input type="password" id="new-password" placeholder="New Password" required>
-      <input type="password" id="confirm-password" placeholder="Confirm New Password" required>
-      <button id="send-otp-btn">Send OTP</button>
-
-      <div id="error-message" style="color: #b22222; margin-top: 10px;"></div>
-
-      <div id="otp-section" style="display:none;">
-        <input type="text" id="otp-code" placeholder="Enter OTP" required>
-        <button id="update-password-btn">Verify & Update</button>
-      </div>
-    </div>
+    <form action="/confirm_save" method="POST">
+      <button name="save_decision" value="yes">Save</button>
+      <button name="save_decision" value="no">Don't Save</button>
+    </form>
   </div>
 
   <!-- 📬 Footer -->
@@ -109,6 +76,5 @@
     });
   </script>
 
-  <script src="{{ url_for('static', filename='js/profile.js') }}"></script>
 </body>
 </html>

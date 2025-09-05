@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Saved Documents</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/view_document.css') }}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+</head>
+<body>
+
+  <!-- 🔝 Navbar -->
+  <header class="navbar">
+    <div class="logo-badge">
+      <img src="{{ url_for('static', filename='images/smartclause-logo.png') }}" alt="SmartClause Logo" class="logo" />
+      <span class="tagline">Smart Legal for Small Business</span>
+    </div>
+    <nav>
+      <a href="/dashboard" class="{% if request.path == '/dashboard' %}active{% endif %}">Dashboard</a>
+      <a href="/agreement" class="{% if request.path in ['/agreement', '/document_interface', '/save_prompt', '/post_actions'] %}active{% endif %}">Upload Document</a>
+      <a href="/saved" class="{% if request.path == '/saved' %}active{% endif %}">View Documents</a>
+      <a href="/profile" class="{% if request.path == '/profile' %}active{% endif %}">View Profile</a>
+      <a href="/reviews" class="{% if request.path == '/reviews' %}active{% endif %}">Add Reviews</a>
+
+      <div class="profile-dropdown">
+        <div class="profile-trigger">
+          {% if user.profile_photo %}
+            <img src="{{ url_for('static', filename=user.profile_photo) }}" alt="Profile Photo">
+          {% else %}
+            <img src="{{ url_for('static', filename='images/default_avatar.png') }}" alt="Default Avatar">
+          {% endif %}
+        </div>
+        <div class="profile-menu hidden">
+          <p><strong>{{ user.first_name }} {{ user.last_name }}</strong></p>
+          <p>{{ user.email }}</p>
+          <form action="/logout" method="GET">
+            <button type="submit">Logout</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- 📄 Saved Documents -->
+  <div class="container">
+    <h2>Your Saved Documents</h2>
+
+    <form method="GET" action="/saved" class="search-bar">
+      <input type="text" name="search" placeholder="Search by filename..." value="{{ search }}">
+      <button type="submit">🔍 Search</button>
+    </form>
+
+    {% if documents %}
+      {% for doc in documents %}
+        <div class="document-card">
+          <h3>{{ doc.filename }}</h3>
+
+          <div class="doc-actions">
+            <a href="{{ url_for('auth.view_simplified', path=doc.original_path) }}" target="_blank">📄 View Original</a>
+            {% if doc.simplified_path %}
+              <a href="{{ url_for('auth.view_simplified', path=doc.simplified_path) }}" target="_blank">🔍 View Simplified</a>
+              <a href="{{ url_for('auth.download_simplified', path=doc.simplified_path) }}">⬇️ Download Simplified</a>
+            {% endif %}
+          </div>
+
+          {% if doc.rating %}
+            <div class="review-block">
+              <strong>Rating:</strong>
+              <div class="star-rating">
+                {% for i in range(1, 6) %}
+                  {% if i <= doc.rating %}
+                    <span class="star filled">★</span>
+                  {% else %}
+                    <span class="star">★</span>
+                  {% endif %}
+                {% endfor %}
+              </div>
+              <br><strong>Comment:</strong> {{ doc.comment }}
+            </div>
+          {% endif %}
+
+          <form action="{{ url_for('auth.delete_document', doc_id=doc.doc_id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this document and its simplified version?');">
+            <button type="submit" class="delete-btn">🗑️ Delete</button>
+          </form>
+          <div id="deleteToast" class="toast hidden">🗑️ Document deleted successfully.</div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p>No documents saved yet.</p>
+    {% endif %}
+  </div>
+
+  <!-- 📬 Footer -->
+  <footer class="footer">
+    <p>Contact us at <a href="mailto:smartclause.dev@gmail.com">smartclause.dev@gmail.com</a></p>
+    <p>&copy; {{ current_year }} SmartClause. All Rights Reserved.</p>
+  </footer>
+
+  <!-- 🔽 Profile Dropdown Script -->
+  <script>
+    const trigger = document.querySelector('.profile-trigger');
+    const menu = document.querySelector('.profile-menu');
+
+    trigger?.addEventListener('click', () => {
+      menu.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!trigger?.contains(e.target) && !menu?.contains(e.target)) {
+        menu?.classList.add('hidden');
+      }
+    });
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("deleted") === "true") {
+      const toast = document.getElementById("deleteToast");
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 3000);
+    }
+  </script>
+
+</body>
+</html>

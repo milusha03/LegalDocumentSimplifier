@@ -2,9 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Your Profile</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+  <title>Document Ready</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/simplified.css') }}" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
 </head>
@@ -25,15 +24,15 @@
 
       <div class="profile-dropdown">
         <div class="profile-trigger">
-          {% if user[3] %}
-            <img src="{{ url_for('static', filename=user[3]) }}" alt="Profile Photo">
+          {% if user.profile_photo %}
+            <img src="{{ url_for('static', filename=user.profile_photo) }}" alt="Profile Photo">
           {% else %}
             <img src="{{ url_for('static', filename='images/default_avatar.png') }}" alt="Default Avatar">
           {% endif %}
         </div>
         <div class="profile-menu hidden">
-          <p><strong>{{ user[0] }} {{ user[1] }}</strong></p>
-          <p>{{ user[2] }}</p>
+          <p><strong>{{ user.first_name }} {{ user.last_name }}</strong></p>
+          <p>{{ user.email }}</p>
           <form action="/logout" method="GET">
             <button type="submit">Logout</button>
           </form>
@@ -42,48 +41,42 @@
     </nav>
   </header>
 
-  <!-- Main Content -->
-  <div class="profile-wrapper">
-    <h2>Your Profile</h2>
+  <!-- 📄 Simplified Document -->
+  <div class="container">
+    <h2>Simplified Document Ready</h2>
 
-    <div class="profile-photo-section">
-      <div class="photo-frame">
-        <img src="{{ url_for('static', filename=user[3]) if user[3] else url_for('static', filename='img/default.png') }}" class="profile-photo">
-        {% if not user[3] %}
-          <div class="photo-overlay">Choose Photo</div>
-        {% endif %}
-      </div>
-
-      <form action="/upload_avatar" method="POST" enctype="multipart/form-data">
-        <br>
-        <label for="upload-photo" class="upload-label">Upload Photo</label>
-        <input type="file" name="avatar" id="upload-photo" accept="image/*" hidden onchange="this.form.submit()">
-      </form>
-
-      <form action="/remove_avatar" method="POST">
-        <button type="submit" class="remove-link">Remove</button>
-      </form>
-
-      <p class="created-date">Account Created: {{ user[4].strftime('%Y-%m-%d') }}</p>
+    <div class="action-buttons">
+      <a href="{{ url_for('auth.view_simplified', path=simplified_path) }}" target="_blank">
+        <button>View Simplified PDF</button>
+      </a>
+      <a href="{{ url_for('auth.download_simplified', path=simplified_path) }}">
+        <button>Download Simplified PDF</button>
+      </a>
     </div>
 
-    <div class="profile-info">
-      <p><strong>Name:</strong> {{ user[0] }} {{ user[1] }}</p>
-      <p><strong>Email:</strong> <span id="email">{{ user[2] }}</span></p>
-    </div>
+    <div class="review-section">
+      <h3>Leave a Review</h3>
+      <form action="/submit_review" method="POST">
+        <input type="hidden" name="simplified_path" value="{{ simplified_path }}">
+        <label for="rating">Rating:</label>
+        <div class="star-input">
+          {% for i in range(5, 0, -1) %}
+            <input type="radio" id="star{{ i }}" name="rating" value="{{ i }}" required />
+            <label for="star{{ i }}" title="{{ i }} stars">★</label>
+          {% endfor %}
+        </div>
 
-    <div class="password-section">
-      <h3>Update Password</h3>
-      <input type="password" id="new-password" placeholder="New Password" required>
-      <input type="password" id="confirm-password" placeholder="Confirm New Password" required>
-      <button id="send-otp-btn">Send OTP</button>
+        <label for="comment">Comment:</label>
+        <textarea name="comment" rows="4" placeholder="Your feedback..."></textarea>
+        <button type="submit">Submit Review</button>
 
-      <div id="error-message" style="color: #b22222; margin-top: 10px;"></div>
+        {% with messages = get_flashed_messages(category_filter=["success"]) %}
+  {% if messages %}
+    <div id="toast" class="toast show">{{ messages[0] }}</div>
+  {% endif %}
+{% endwith %}
 
-      <div id="otp-section" style="display:none;">
-        <input type="text" id="otp-code" placeholder="Enter OTP" required>
-        <button id="update-password-btn">Verify & Update</button>
-      </div>
+      </form>
     </div>
   </div>
 
@@ -109,6 +102,17 @@
     });
   </script>
 
-  <script src="{{ url_for('static', filename='js/profile.js') }}"></script>
+  <script>
+window.addEventListener("DOMContentLoaded", () => {
+  const toast = document.getElementById("toast");
+  if (toast) {
+    setTimeout(() => {
+      toast.style.opacity = 0;
+    }, 3000); // hide after 3s
+  }
+});
+</script>
+
+
 </body>
 </html>

@@ -6,6 +6,7 @@
   <title>SmartClause Dashboard</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
 </head>
 <body>
 
@@ -16,19 +17,37 @@
       <span class="tagline">Smart Legal for Small Business</span>
     </div>
     <nav>
-      <a href="/upload" title="Upload a new legal document">Upload Document</a>
-      <a href="/saved" title="View your saved summaries">View Documents</a>
-      <a href="/profile" title="Manage your profile">View Profile</a>
-      <a href="/reviews" title="Add feedback or suggestions">Add Reviews</a>
-      <a href="/logout" class="logout" title="Log out of your account">Logout</a>
+      <a href="/dashboard" class="{% if request.path == '/dashboard' %}active{% endif %}">Dashboard</a>
+      <a href="/agreement" class="{% if request.path in ['/agreement', '/document_interface', '/save_prompt', '/post_actions'] %}active{% endif %}">Upload Document</a>
+      <a href="/saved" class="{% if request.path == '/saved' %}active{% endif %}">View Documents</a>
+      <a href="/profile" class="{% if request.path == '/profile' %}active{% endif %}">View Profile</a>
+      <a href="/reviews" class="{% if request.path == '/reviews' %}active{% endif %}">Add Reviews</a>
+
+      <div class="profile-dropdown">
+  <div class="profile-trigger">
+    {% if user.profile_photo %}
+      <img src="{{ url_for('static', filename=user.profile_photo) }}" alt="Profile Photo">
+    {% else %}
+      <img src="{{ url_for('static', filename='images/default_avatar.png') }}" alt="Default Avatar">
+    {% endif %}
+  </div>
+  <div class="profile-menu hidden">
+    <p><strong>{{ user.first_name }} {{ user.last_name }}</strong></p>
+    <p>{{ user.email }}</p>
+    <form action="/logout" method="GET">
+      <button type="submit">Logout</button>
+    </form>
+  </div>
+</div>
+
     </nav>
   </header>
 
   <!-- 🎯 Hero Section -->
   <section class="hero">
-    <h1>Welcome to Your Dashboard</h1>
+    <h1>Hello, {{ user.first_name }}!</h1>
     <p>Empower your decisions with SmartClause</p>
-    <a href="/upload" class="cta-button">Upload Document</a>
+    <a href="/agreement" class="cta-button">Upload Document</a>
   </section>
 
   <!-- 📦 Features Section -->
@@ -108,9 +127,26 @@
 </section>
 
   <!-- 📬 Footer -->
-  <footer class="footer">
-    <p>Contact us at <a href="mailto:smartclause.dev@gmail.com">smartclause.dev@gmail.com</a></p>
-  </footer>
+<footer class="footer">
+  <p>Contact us at <a href="mailto:smartclause.dev@gmail.com">smartclause.dev@gmail.com</a></p>
+  <p>&copy; {{ current_year }} SmartClause. All Rights Reserved.</p>
+</footer>
+
+  <script>
+  const trigger = document.querySelector('.profile-trigger');
+  const menu = document.querySelector('.profile-menu');
+
+  trigger.addEventListener('click', () => {
+    menu.classList.toggle('hidden');
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!trigger.contains(e.target) && !menu.contains(e.target)) {
+      menu.classList.add('hidden');
+    }
+  });
+</script>
+
 
 </body>
 </html>

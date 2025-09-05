@@ -1,5 +1,5 @@
 # backend_app/app.py
-from flask import Flask, session, redirect, render_template, url_for,request, flash
+from flask import Flask, session, redirect, render_template, url_for, request, flash
 from backend_app.auth_routes import auth_bp
 
 app = Flask(__name__)

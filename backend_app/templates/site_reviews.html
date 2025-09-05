@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Site Reviews</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/site_reviews.css') }}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+</head>
+<body>
+
+  <!-- 🔝 Navbar -->
+  <header class="navbar">
+    <div class="logo-badge">
+      <img src="{{ url_for('static', filename='images/smartclause-logo.png') }}" alt="SmartClause Logo" class="logo" />
+      <span class="tagline">Smart Legal for Small Business</span>
+    </div>
+    <nav>
+      <a href="/dashboard" class="{% if request.path == '/dashboard' %}active{% endif %}">Dashboard</a>
+      <a href="/agreement" class="{% if request.path in ['/agreement', '/document_interface', '/save_prompt', '/post_actions'] %}active{% endif %}">Upload Document</a>
+      <a href="/saved" class="{% if request.path == '/saved' %}active{% endif %}">View Documents</a>
+      <a href="/profile" class="{% if request.path == '/profile' %}active{% endif %}">View Profile</a>
+      <a href="/reviews" class="{% if request.path == '/reviews' %}active{% endif %}">Add Reviews</a>
+
+      <div class="profile-dropdown">
+        <div class="profile-trigger">
+          {% if user.profile_photo %}
+            <img src="{{ url_for('static', filename=user.profile_photo) }}" alt="Profile Photo">
+          {% else %}
+            <img src="{{ url_for('static', filename='images/default_avatar.png') }}" alt="Default Avatar">
+          {% endif %}
+        </div>
+        <div class="profile-menu hidden">
+          <p><strong>{{ user.first_name }} {{ user.last_name }}</strong></p>
+          <p>{{ user.email }}</p>
+          <form action="/logout" method="GET">
+            <button type="submit">Logout</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- 📝 Review Section -->
+  <main>
+    <div class="container">
+      <h2>Share Your Feedback</h2>
+
+      <form method="POST" class="review-section">
+        <label for="rating">Rating:</label>
+        <div class="star-input">
+          {% for i in range(5, 0, -1) %}
+            <input type="radio" id="star{{ i }}" name="rating" value="{{ i }}" required />
+            <label for="star{{ i }}" title="{{ i }} stars">★</label>
+          {% endfor %}
+        </div>
+
+        <label for="comment">Comment:</label>
+        <textarea name="comment" rows="4" required></textarea>
+
+        <button type="submit">Submit Review</button>
+      </form>
+
+      <h2>What Others Are Saying</h2>
+
+      {% if reviews %}
+        {% for r in reviews %}
+          <div class="review-block">
+            <strong>{{ r.first_name }} {{ r.last_name }}</strong>
+            <div class="star-rating">
+              {% for i in range(1, 6) %}
+                {% if i <= r.rating %}
+                  <span class="star filled">★</span>
+                {% else %}
+                  <span class="star">★</span>
+                {% endif %}
+              {% endfor %}
+            </div>
+            <em>{{ r.comment }}</em><br>
+            <span class="timestamp">{{ r.reviewed_at.strftime('%Y-%m-%d %H:%M') }}</span>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p>No reviews yet. Be the first to share your thoughts!</p>
+      {% endif %}
+    </div>
+  </main>
+
+  <!-- 📬 Footer -->
+  <footer class="footer">
+    <p>Contact us at <a href="mailto:smartclause.dev@gmail.com">smartclause.dev@gmail.com</a></p>
+    <p>&copy; {{ current_year }} SmartClause. All Rights Reserved.</p>
+  </footer>
+
+  <!-- 🔽 Profile Dropdown Script -->
+  <script>
+    const trigger = document.querySelector('.profile-trigger');
+    const menu = document.querySelector('.profile-menu');
+
+    trigger?.addEventListener('click', () => {
+      menu.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!trigger?.contains(e.target) && !menu?.contains(e.target)) {
+        menu?.classList.add('hidden');
+      }
+    });
+  </script>
+
+</body>
+</html>
