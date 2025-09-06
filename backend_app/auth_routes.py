@@ -17,7 +17,9 @@ import fitz  # PyMuPDF
 from backend_app.db import get_db_connection
 from psycopg2.extras import RealDictCursor
 from datetime import datetime
-
+from backend_app.lora_adapter import generate_with_lora
+from backend_app.nlp_postprocess import clean_output
+from backend_app.utils.pdf_utils import extract_text_from_pdf   
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -319,10 +321,10 @@ def accept_agreement():
 def agreement():
     return render_template("agreement.html")
 
+# ✅ Optional fallback simplifier (can be removed)
 def simplify_document(path):
     with open(path, "r", encoding="utf-8") as f:
         content = f.read()
-    # Basic NLP stub — replace with actual logic later
     simplified = content.replace("hereinafter", "from now on").replace("aforementioned", "mentioned earlier")
     return simplified
 
@@ -330,9 +332,19 @@ def generate_pdf(text, output_path):
     pdf = FPDF()
     pdf.add_page()
     pdf.set_auto_page_break(auto=True, margin=15)
-    pdf.set_font("Arial", size=12)
+
+    # ✅ Use Unicode-compatible font
+    font_path = os.path.join("backend_app", "static", "fonts", "DejaVuSans.ttf")
+    pdf.add_font("DejaVu", "", font_path, uni=True)
+    pdf.set_font("DejaVu", size=12)
+
     for line in text.split("\n"):
-        pdf.multi_cell(0, 10, line)
+        try:
+            pdf.multi_cell(0, 10, line)
+        except Exception as e:
+            print("PDF write error:", e)
+            pdf.multi_cell(0, 10, "[⚠️ Text could not be rendered]")
+
     pdf.output(output_path)
 
 @auth_bp.route("/submit_document", methods=["POST"])
@@ -354,12 +366,30 @@ def submit_document():
         file.save(raw_path)
 
         original_text = extract_text_from_pdf(raw_path)
-        simplified_text = simplify_text(original_text)
+        print("Extracted text length:", len(original_text))
+
+        prompt = f"Simplify this clause for a small business owner unfamiliar with legal terms:\n\n{original_text}"
+
+        simplified_text = None
+        try:
+            raw_output = generate_with_lora(prompt)
+            print("Raw Output from LoRA:", raw_output)
+            simplified_text = clean_output(raw_output)
+            print("Cleaned Output:", simplified_text)
+        except Exception as e:
+            print("Simplification error:", e)
+            flash("⚠️ Simplification failed. Please try again.", "error")
+            return redirect(url_for("auth.document_interface"))
+
+        if not simplified_text or simplified_text.strip() == "":
+            flash("⚠️ Simplification returned empty output.", "error")
+            return redirect(url_for("auth.document_interface"))
 
         simplified_filename = f"simplified_{filename.replace('.pdf', '')}.pdf"
         simplified_path = os.path.join("static", "simplified", simplified_filename)
         os.makedirs(os.path.dirname(simplified_path), exist_ok=True)
         generate_pdf(simplified_text, simplified_path)
+        print("PDF generated at:", simplified_path)
 
         session["pending_doc"] = {
             "filename": filename,
@@ -367,13 +397,13 @@ def submit_document():
             "simplified_path": simplified_path
         }
 
-        # ✅ Redirect to save prompt instead of rendering it directly
         return redirect(url_for("auth.save_prompt", path=simplified_path))
 
     except Exception as e:
-        print("Error during simplification:", e)
-        return "Internal Server Error", 500
-
+        print("Error during document submission:", e)
+        flash("⚠️ Internal server error during document processing.", "error")
+        return redirect(url_for("auth.document_interface"))
+    
 @auth_bp.route("/confirm_save", methods=["POST"])
 def confirm_save():
     user_id = session.get("user_id")
